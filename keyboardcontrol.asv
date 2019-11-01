@@ -3,39 +3,70 @@ InitKeyboard();
 
 while 1
     pause (0.1);
+    brick.MoveMotor('AB', 50);
+    distance = brick.UltrasonicDist(2);
+    disp(distance);
+    if distance < 40 % if it gets too close to a wall it will turn right
+        brick.StopAllMotors();
+        pause(2);
+        brick.MoveMotor('A', 30); %turns right
+        pause(2);
+        distance = brick.UltrasonicDist(2);
+        disp (distance);
+        rightDistance = distance;% storing the right distance as a variable
+        disp('right distance is ' + rightDistance);
+        brick.MoveMotor('B',30);
+        pause(4);
+        distance = brick.UltrasonicDist(2);
+        disp (distance);
+        leftDistance = distance; % storing the left distance
+        disp('left distance is ' + leftDistance);
+        if rightDistance > leftDistance
+            brick.MoveMotor('A', 30);
+            pause(4);
+        end
+    end
+            
+    
     switch key
         case 'uparrow'
             disp('Up Arrow Pressed');
-            brick.MoveMotor('AB', 100);
+            brick.MoveMotor('AB', 50);
             pause(0.25);
             brick.StopMotor('AB');
             
         case 'downarrow'
             disp('Down Arrow Pressed');
-            brick.MoveMotor('AB', -100);
+            brick.MoveMotor('AB', -50);
+            pause(0.25);
             brick.StopMotor('AB');
             
         case 'leftarrow'
             disp('Left Arrow Pressed');
-            brick.MoveMotor('B', 80);
+            brick.MoveMotor('B', 25);
             pause(0.25);
             brick.StopMotor('B');
         case 'rightarrow'
             disp('Right Arrow Pressed');
-            brick.MoveMotor('A', 80);
+            brick.MoveMotor('A', 25);
             pause(0.25);
             brick.StopMotor('A');
         case 0
             disp('No Key Pressed');
         case 'p'
-            disp('Pick up motor pressed')
+            disp('Pick up motor pressed');
             brick.MoveMotor('C',5);
             pause(0.25);
             brick.StopMotor('C');
         case 'o'
-            disp
+            disp('Drop off motor being pressed');
+            brick.MoveMotor('C',-5);
+            pause(0.25);
+            brick.StopMotor('C');
         case 'q'
             break;
     end
 end
+
+
 CloseKeyboard();
