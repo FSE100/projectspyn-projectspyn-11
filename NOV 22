@@ -1,0 +1,44 @@
+while 1
+    pause (0.1);
+    brick.MoveMotor('AB', 50);
+    distance = brick.UltrasonicDist(2);
+    disp(distance);
+    brick.SetColorMode(1,2); % setting up color sensor
+    color = brick.ColorCode(1);
+    disp(color);
+    if color == 2 || color ==3 %2 -- blue  3 -- green
+       brick.StopAllMotors();
+       Manual; % calling keyboard control
+    end
+    if color ==5 % if color is red pause for 5 sec
+        brick.StopAllMotors();
+        pause(4);
+    end
+    if distance < 50 % if it gets too close to a wall it will turn right
+        brick.StopAllMotors();
+        pause(2);
+        brick.MoveMotor('A', 30); %turns right
+        brick.MoveMotor('B', -30);
+        pause(.8);
+        brick.StopAllMotors();
+        rightDistance = brick.UltrasonicDist(2);
+        disp('right: ');
+        disp(rightDistance);
+        brick.MoveMotor('B',30); % turning left 180 degrees
+        brick.MoveMotor('A', -30);
+        pause(1.4);
+        brick.StopAllMotors();
+        leftDistance = brick.UltrasonicDist(2);
+        disp('left: ');
+        disp(leftDistance);
+        if rightDistance > leftDistance % turns right 180 degrees
+            brick.MoveMotor('A', 30);
+            brick.MoveMotor('B', -30);
+            pause(1.7);
+        end     
+    end
+   
+
+         
+end
+ 
